@@ -1,7 +1,8 @@
+import "server-only" //Dependencia para que se ejecute solo en el lado del servidor el código
 import { cache } from "react"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { UserSchema } from "../schemas"
+import { getToken } from "./token"
 //DATA ACCESS LAYER
 
 //COMPROBAR SI EL USUARIO ESTA AUTENTICADO
@@ -10,9 +11,7 @@ import { UserSchema } from "../schemas"
 
 export const verifySession = cache(async () => {
 
-    const authCookie = await cookies()
-
-    const token = authCookie.get('CASHTRACKER_TOKEN')?.value
+    const token = await getToken()
 
     if(!token) {
         redirect('/auth/login')

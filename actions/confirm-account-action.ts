@@ -14,6 +14,7 @@ export async function confirmAccount(
   prevState: ActionStateType
 ) {
   const confirmToken = TokenSchema.safeParse(token);
+  console.log(prevState)
 
   if (!confirmToken.success) {
     return {

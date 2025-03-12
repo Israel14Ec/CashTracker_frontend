@@ -1,10 +1,13 @@
 "use client"
 
 import { authenticate } from "@/actions/authenticate-user-action";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 export default function LoginForm() {
+
+  const router = useRouter()
 
   const [state, dispatch] = useActionState(authenticate, {
     errors: []
@@ -15,7 +18,10 @@ export default function LoginForm() {
       state.errors.forEach((issue) => {
         toast.error(issue)
       })
+      return
     }
+    router.push("/auth/login")
+    
   }, [state])
 
   return (
