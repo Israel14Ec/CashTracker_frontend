@@ -56,7 +56,7 @@ export async function editBudget(budgetId: Budget['id'], prevState: ActionStateT
     const { msg } = SuccessSchema.parse(json)
 
     //revalidatePath("/admin") //Revalidación de los datos (Trae de nuevo los datos a la API de toda la URl)
-    revalidateTag("all-budgets") //Trae los datos del tag
+    //revalidateTag("all-budgets") //Trae los datos del tag
 
     return {
         errors: [],

@@ -2,12 +2,11 @@
 
 import { getToken } from "@/src/auth/token";
 import {
-    Budget,
-    ErrorResponseSchema,
-    PasswordValidationSchema,
-    SuccessSchema,
+  Budget,
+  ErrorResponseSchema,
+  PasswordValidationSchema,
+  SuccessSchema,
 } from "@/src/schemas";
-import { revalidatePath } from "next/cache";
 
 type ActionStateType = {
   errors: string[];
@@ -77,12 +76,11 @@ export async function deleteBudget(
     };
   }
 
-  revalidatePath("/admin")
+  //revalidateTag("/all-budgets")
   const { msg } = SuccessSchema.parse(deleteBudgetJson);
-  console.log(msg)
 
   return {
     errors: [],
     success: msg,
-  };
+  }
 }

@@ -21,8 +21,8 @@ async function getUserBudgets() {
       Authorization: `Bearer ${token}`,
     },
     next: {
-      tags: ["all-budgets"] //Tag para la revalidación (propio de next)
-    }
+      tags: ["all-budgets"], //Tag para la revalidación (propio de next)
+    },
   });
 
   const json = await req.json();
@@ -31,7 +31,6 @@ async function getUserBudgets() {
 }
 
 export default async function AdminPage() {
-
   const budgets = await getUserBudgets();
 
   return (
@@ -55,13 +54,12 @@ export default async function AdminPage() {
       </div>
 
       {budgets.length ? (
-        
-        <ul
-          role="list"
-          className="divide-y divide-gray-300 border shadow-lg mt-10 "
-        >
-          {budgets.map((budget) => (
-            <>
+        <> 
+          <ul
+            role="list"
+            className="divide-y divide-gray-300 border shadow-lg mt-10 "
+          >
+            {budgets.map((budget) => (
               <li key={budget.id} className="flex justify-between gap-x-6 p-5 ">
                 <div className="flex min-w-0 gap-x-4">
                   <div className="min-w-0 flex-auto space-y-2">
@@ -75,23 +73,25 @@ export default async function AdminPage() {
                       </Link>
                     </p>
                     <p className="text-xl font-bold text-amber-500">
-                      { formatCurrency(+budget.amount)}
+                      {formatCurrency(+budget.amount)}
                     </p>
                     <p className="text-gray-500  text-sm">
-                      Última actualización: {' '}
-                      <span className=" font-bold">{formatDate(budget.updatedAt)} </span>
+                      Última actualización:{" "}
+                      <span className=" font-bold">
+                        {formatDate(budget.updatedAt)}{" "}
+                      </span>
                     </p>
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-x-6">
-                  <BudgetMenu budgetId={budget.id}/>
+                  <BudgetMenu budgetId={budget.id} />
                 </div>
               </li>
+            ))}
+          </ul>
 
-              <DeleteBudgetModal />
-            </>
-          ))}
-        </ul>
+          <DeleteBudgetModal />
+        </>
       ) : (
         <p className=" text-center py-10">
           No hay presupuestos aún{" "}
@@ -103,6 +103,8 @@ export default async function AdminPage() {
           </Link>
         </p>
       )}
+
+      
     </>
   );
 }

@@ -73,6 +73,15 @@ export const UserSchema = z.object({
   email: z.string().email(),
 });
 
+export const ExpenseApiResponseSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  amount: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  budgetId: z.number()
+})
+
 
 export const BudgetAPIResponseSchema = z.object({
   id: z.number(),
@@ -80,13 +89,15 @@ export const BudgetAPIResponseSchema = z.object({
   amount: z.string(),
   userId: z.number(),
   createdAt: z.string(),
-  updatedAt: z.string()
+  updatedAt: z.string(),
+  expenses: z.array(ExpenseApiResponseSchema)
 })
 
-
-export const BudgetsApiResponseShema = z.array(BudgetAPIResponseSchema)
+//Omito el expenses
+export const BudgetsApiResponseShema = z.array(BudgetAPIResponseSchema.omit({expenses: true}))
 
 //Generar un type con el schema
 
 export type Budget = z.infer<typeof BudgetAPIResponseSchema>
 export type User = z.infer<typeof UserSchema>
+export type Expense = z.infer<typeof ExpenseApiResponseSchema>
