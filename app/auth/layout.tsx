@@ -1,4 +1,5 @@
 import Logo from "@/components/ui/Logo";
+import Link from "next/link";
 
 
 export default function AuthLayout({ children } : Readonly<{children: React.ReactNode}>) {
@@ -7,7 +8,9 @@ export default function AuthLayout({ children } : Readonly<{children: React.Reac
         <div className=" lg:grid lg:grid-cols-2 lg:min-h-screen">
             <div className="  flex justify-center bg-purple-950 lg:bg-auth lg:2bg-30 bg-no-repeat bg-left-bottom">
               <div className=" w-96 py-10 lg:py-20">
-                <Logo />
+                <Link href="/">
+                  <Logo />
+                </Link>
               </div>
             </div>
             <div className=" p-10 lg:py-28">

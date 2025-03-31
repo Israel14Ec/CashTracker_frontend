@@ -1,7 +1,7 @@
 "use server"
 
 import { getToken } from "@/src/auth/token"
-import { ErrorResponseSchema, SuccessSchema } from "@/src/schemas"
+import { DraftExpensesSchema, ErrorResponseSchema, SuccessSchema } from "@/src/schemas"
 
 type ActionStateType = {
     errors: string[]
@@ -10,9 +10,27 @@ type ActionStateType = {
 
 export default async function createExpense(budgetId: number,prevState: ActionStateType, formData: FormData) {
     
+
+    //Validar
+    const expenseData = {
+        name: formData.get("name"),
+        amount: formData.get("amount")
+    }
+
+    const expense = DraftExpensesSchema.safeParse(expenseData)
+    console.log(expense)
+    if(!expense.success) {
+        console.log("entro aqui")
+        return {
+            errors: expense.error.issues.map(issue => issue.message),
+            success: ""
+        }
+    }
+
     //Get Token
     const token = await getToken()
     const url = `${process.env.API_URL}/budgets/${budgetId}/expenses`
+
 
     const req = await fetch(url, {
         method: "POST",
@@ -21,8 +39,8 @@ export default async function createExpense(budgetId: number,prevState: ActionSt
             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-            name: formData.get("name"),
-            amount: formData.get("amount")
+            name: expense.data.name,
+            amount: expense.data.amount
         })
     })
 

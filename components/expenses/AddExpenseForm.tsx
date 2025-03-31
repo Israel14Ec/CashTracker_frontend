@@ -6,6 +6,8 @@ import { DialogTitle } from "@headlessui/react";
 import ExpenseForm from "./ExpenseForm";
 import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
+import { error } from "console";
+import ErrorMessage from "../ui/ErrorMessage";
 
 type AddExpenseFormProps  = {
   closeModal: () => void
@@ -28,10 +30,6 @@ export default function AddExpenseForm({closeModal} : AddExpenseFormProps) {
       closeModal()
       return
     } 
-    if(state.errors.length) {
-      toast.error(state.errors[0])
-      return
-    }
 
   }, [state])
 
@@ -47,6 +45,7 @@ export default function AddExpenseForm({closeModal} : AddExpenseFormProps) {
       <p className="text-xl font-bold">Llena el formulario y crea un {''}
         <span className="text-amber-500">gasto</span>
       </p>
+      {state.errors.map((error, index) => <ErrorMessage key={index}> { error} </ErrorMessage>)}
       <form
         className="bg-gray-100 shadow-lg rounded-lg p-10 mt-10 border"
         action={dispatch}

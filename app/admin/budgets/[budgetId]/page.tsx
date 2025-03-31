@@ -1,5 +1,7 @@
+import ProgressBar from "@/components/budgets/ProgressBar";
 import AddExpenseButton from "@/components/expenses/AddExpenseButton";
 import ExpenseMenu from "@/components/expenses/ExpenseMenu";
+import Amount from "@/components/ui/Amount";
 import ModalContainer from "@/components/ui/ModalContainer";
 import { getBudgetById } from "@/src/services/budgets";
 import { formatCurrency, formatDate } from "@/src/utils";
@@ -30,6 +32,13 @@ export default async function BudgetDetailsPage({
 
   const budget = await getBudgetById(+budgetId!);
 
+  const totalSpent =
+    budget?.expenses.reduce((acc, expense) => +expense.amount + acc, 0) || 0;
+  const budgetValue = budget?.amount ? +budget?.amount : 0;
+  const totalAvailable = budgetValue - totalSpent;
+
+  const percentage = +((totalSpent / budgetValue) * 100).toFixed(2);
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -46,6 +55,14 @@ export default async function BudgetDetailsPage({
 
       {budget?.expenses.length ? (
         <>
+          <div className=" grid grid-cols-1 md:grid-cols-2 mt-10">
+            <ProgressBar percentage={percentage} />
+            <div className=" flex flex-col justify-center items-center md:items-start gap-5">
+              <Amount label="Presupuesto" amount={+budget.amount} />
+              <Amount label="Disponible" amount={totalAvailable} />
+              <Amount label="Gastado" amount={totalSpent} />
+            </div>
+          </div>
           <h1 className=" text-3xl text-purple-950 mt-10">
             Gastos en este presupuesto
           </h1>
@@ -62,18 +79,18 @@ export default async function BudgetDetailsPage({
                     </p>
                     <p className="text-xl font-bold text-amber-500">
                       {formatCurrency(+expense.amount)}
-                    
                     </p>
                     <p className="text-gray-500  text-sm">
-                      Agregado: {" "}
-                      <span className=" font-bold"> {formatDate(expense.updatedAt)} </span>
+                      Agregado:{" "}
+                      <span className=" font-bold">
+                        {" "}
+                        {formatDate(expense.updatedAt)}{" "}
+                      </span>
                     </p>
                   </div>
                 </div>
 
-                <ExpenseMenu 
-                  expenseId={expense.id}
-                />
+                <ExpenseMenu expenseId={expense.id} />
               </li>
             ))}
           </ul>
